@@ -52,6 +52,15 @@ punctuation in source text.
 Every visible string in the interface goes through `useI18n`. A hardcoded
 string cannot be translated later without editing the component again.
 
+Visible copy should sound like the person who built Ravelon showing it to a
+colleague: short, plain, one idea per sentence, the information an admin
+needs and nothing more. Details belong in the README or docs, not in a form
+or an error message. No brochure words (seamless/nahtlos, powerful,
+effortless/mühelos), no fine print about defaults, and English and German
+each written as if that language came first. The full guide with examples is
+`docs/writing.md` in ravelon-website:
+https://github.com/ravelon-app/ravelon-website/blob/main/docs/writing.md
+
 ## Security rules
 
 These are not style preferences.
