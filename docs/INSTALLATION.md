@@ -154,7 +154,6 @@ Find the gateway of the compose network:
 ```bash
 docker network inspect ravelon-sync_default \
   --format '{{range .IPAM.Config}}{{.Gateway}}{{end}}'
-# compose.postgres.yaml: ravelon-sync_backend
 ```
 
 or read `remoteAddress` from a request in `docker compose logs sync`. Then:

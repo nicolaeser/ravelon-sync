@@ -5,6 +5,17 @@ Notable changes, newest first. This project follows
 
 ## Unreleased
 
+### Important
+
+- `compose.postgres.yaml` keeps PostgreSQL in `./postgres_data` next to the
+  compose file instead of the `postgres_data` volume. Before upgrading an
+  existing install, stop it and copy the volume into place:
+
+  ```bash
+  docker compose -f compose.postgres.yaml down
+  docker run --rm -v ravelon-sync_postgres_data:/from -v "$PWD/postgres_data:/to" alpine cp -a /from/. /to/
+  ```
+
 ### Security
 
 - Nodemailer 10.0.13 and a patched fast-uri. The previous versions had
