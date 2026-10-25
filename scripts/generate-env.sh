@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")"
-if ! compgen -G '*compose*.y*ml' >/dev/null && compgen -G '../*compose*.y*ml' >/dev/null; then
-  cd ..
-fi
-
 OUTPUT=${ENV_OUTPUT:-.env}
 FORCE=false
 ASSUME_DEFAULTS=false
