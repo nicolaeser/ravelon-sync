@@ -26,6 +26,9 @@ Notable changes, newest first. This project follows
 
 ### New
 
+- `scripts/generate-env.sh` asks for the public URL, database and mail,
+  generates the secrets and writes `.env`. Run again with `--force` to change
+  it; existing values are kept.
 - A team invitation lets the invited person create an account with that
   address, even when sign-up needs an invitation, and joins the team at once.
   The invitation page offers "Create account and join" next to signing in.

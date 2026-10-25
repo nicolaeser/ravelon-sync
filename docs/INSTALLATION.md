@@ -16,11 +16,12 @@ plain HTTP for anything except `127.0.0.1`, on purpose.
 ```bash
 git clone https://github.com/ravelon-app/ravelon-sync.git
 cd ravelon-sync
-cp .env.example .env
-./scripts/generate-secrets.sh
+./scripts/generate-env.sh
 ```
 
-Paste the three printed values into `.env`, replacing the empty ones.
+It asks for the public URL, database and mail, generates the three secrets and
+writes `.env`. It needs bash 5. To fill in `.env` by hand instead, copy
+`.env.example` and paste in the output of `./scripts/generate-secrets.sh`.
 
 They are not interchangeable and they are not recoverable:
 
@@ -234,6 +235,9 @@ complaint. Use PostgreSQL when you want replicas or a single backup story:
 ```bash
 docker compose -f compose.postgres.yaml up -d
 ```
+
+Choosing `postgres` in `generate-env.sh` sets `COMPOSE_FILE` in `.env`, so
+plain `docker compose` commands use this file.
 
 Migrations take an advisory lock at startup, so several replicas cannot race
 through the same schema change.

@@ -27,12 +27,11 @@ anybody's vault.
 ```bash
 git clone https://github.com/ravelon-app/ravelon-sync.git
 cd ravelon-sync
-cp .env.example .env
-./scripts/generate-secrets.sh
+./scripts/generate-env.sh
 ```
 
-Paste the three generated secrets into `.env`, set `PUBLIC_URL` to the address
-you will reach the server at, then:
+It asks for the address you will reach the server at, generates the secrets
+and writes `.env`. Then:
 
 ```bash
 docker compose up -d
