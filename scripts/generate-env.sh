@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")"
+if ! compgen -G '*compose*.y*ml' >/dev/null && compgen -G '../*compose*.y*ml' >/dev/null; then
+  cd ..
+fi
 
 OUTPUT=${ENV_OUTPUT:-.env}
 FORCE=false
@@ -397,12 +400,7 @@ section "Server"
 ask PUBLIC_URL "Public URL people reach the server at" "" required origin real
 ask BIND_IP "Bind address (127.0.0.1 for a proxy on this host, 0.0.0.0 for all)" 127.0.0.1 required ip
 ask PORT "Port on this host" 4100 required port
-proxy_label="Reverse proxy IPs, comma separated (empty if none)"
-if $INTERACTIVE && command -v docker >/dev/null; then
-  gateway=$(docker network inspect ravelon-sync_default --format '{{range .IPAM.Config}}{{.Gateway}}{{end}}' 2>/dev/null || true)
-  [[ -z $gateway ]] || proxy_label="Reverse proxy IPs, comma separated (proxy on this host: $gateway)"
-fi
-ask TRUSTED_PROXY_IPS "$proxy_label" "" ips
+ask TRUSTED_PROXY_IPS "Reverse proxy IPs, comma separated (empty if none)" "" ips
 
 section "Secrets"
 if $INTERACTIVE; then
@@ -413,8 +411,7 @@ generated MFA_ENCRYPTION_KEY SYNC_JWT_SECRET
 generated SETTINGS_ENCRYPTION_KEY MFA_ENCRYPTION_KEY
 
 section "Database"
-compose_file=$(current COMPOSE_FILE)
-if [[ $compose_file == *compose.postgres.yaml* || -n $(current POSTGRES_PASSWORD) ]]; then
+if [[ -n $(current POSTGRES_PASSWORD) ]]; then
   detected=postgres
 elif [[ -n $(current DATABASE_URL) ]]; then
   detected=external
@@ -422,8 +419,8 @@ else
   detected=sqlite
 fi
 select_from "Database" "${DATABASE:-$detected}" \
-  "sqlite|compose.yaml, simplest for one server" \
-  "postgres|compose.postgres.yaml, bundled PostgreSQL" \
+  "sqlite|SQLite file, simplest for one server" \
+  "postgres|bundled PostgreSQL container" \
   "external|a PostgreSQL server you already run"
 database=$CHOICE
 if [[ -f $OUTPUT && $database != "$detected" ]]; then
@@ -431,8 +428,6 @@ if [[ -f $OUTPUT && $database != "$detected" ]]; then
 fi
 case "$database" in
   postgres)
-    [[ $compose_file == *compose.postgres.yaml* ]] || compose_file=compose.postgres.yaml
-    set_value COMPOSE_FILE "$compose_file"
     keep_or POSTGRES_USER ravelon
     keep_or POSTGRES_DB ravelon_sync
     keep_or POSTGRES_PASSWORD "$(gen_password)"
@@ -440,7 +435,6 @@ case "$database" in
     drop DATABASE_URL
     ;;
   *)
-    [[ $compose_file != *compose.postgres.yaml* ]] || drop COMPOSE_FILE
     drop POSTGRES_USER
     drop POSTGRES_DB
     drop POSTGRES_PASSWORD

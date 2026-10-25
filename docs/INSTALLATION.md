@@ -236,9 +236,6 @@ complaint. Use PostgreSQL when you want replicas or a single backup story:
 docker compose -f compose.postgres.yaml up -d
 ```
 
-Choosing `postgres` in `generate-env.sh` sets `COMPOSE_FILE` in `.env`, so
-plain `docker compose` commands use this file.
-
 Migrations take an advisory lock at startup, so several replicas cannot race
 through the same schema change.
 
