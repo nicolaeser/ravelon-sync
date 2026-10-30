@@ -54,8 +54,7 @@ jobs:
           sudo apt-get install --yes shellcheck
           shellcheck scripts/generate-env.sh
           bash scripts/generate-env.sh --yes
-          docker compose --env-file "$ENV_OUTPUT" -f compose.yaml config --quiet
-          docker compose --env-file "$ENV_OUTPUT" -f compose.postgres.yaml config --quiet
+          node scripts/check-compose.mjs "$ENV_OUTPUT"
 
       - name: Audit high severity
         run: npm audit --audit-level=high

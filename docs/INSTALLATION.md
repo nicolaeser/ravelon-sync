@@ -241,6 +241,10 @@ complaint. Use PostgreSQL when you want replicas or a single backup story:
 docker compose -f compose.postgres.yaml up -d
 ```
 
+The bundled database uses the `postgres_data` named volume. With the default
+project name it resolves to `ravelon-sync_postgres_data`; upgrades continue to
+use that same volume.
+
 Migrations take an advisory lock at startup, so several replicas cannot race
 through the same schema change.
 

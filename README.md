@@ -40,6 +40,9 @@ docker compose up -d
 
 The generator needs Bash 5. On macOS, install it with `brew install bash`.
 
+The bundled PostgreSQL setup keeps its data in the existing `postgres_data`
+named volume across upgrades.
+
 Open the server in a browser. The first account you create becomes the
 administrator, and sign-up closes behind it until you decide who else may join.
 
