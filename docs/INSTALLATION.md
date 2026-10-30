@@ -45,10 +45,15 @@ Get it wrong and people receive links that go nowhere.
 
 ## 3. Start it
 
+Run the command printed by the generator. For SQLite:
+
 ```bash
 docker compose up -d
 docker compose logs -f sync
 ```
+
+For the bundled PostgreSQL database, use `docker compose -f compose.postgres.yaml`
+for both commands.
 
 The compose files pass every setting from `.env.example` into the container.
 Two are fixed on purpose: `DATABASE_FILE` is `/data/ravelon-sync.db` inside

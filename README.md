@@ -31,11 +31,14 @@ cd ravelon-sync
 ```
 
 It asks for the address you will reach the server at, generates the secrets
-and writes `.env`. Then:
+and writes `.env`. Run the start command it prints for the selected database.
+For SQLite:
 
 ```bash
 docker compose up -d
 ```
+
+The generator needs Bash 5. On macOS, install it with `brew install bash`.
 
 Open the server in a browser. The first account you create becomes the
 administrator, and sign-up closes behind it until you decide who else may join.

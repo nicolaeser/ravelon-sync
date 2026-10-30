@@ -493,8 +493,10 @@ if $INTERACTIVE && ! confirm "Write $OUTPUT?" y; then
 fi
 write_env
 
-next="docker compose up -d"
-[[ $OUTPUT == .env ]] || next="docker compose --env-file $OUTPUT up -d"
+next="docker compose"
+[[ $OUTPUT == .env ]] || next+=" --env-file $(printf '%q' "$OUTPUT")"
+[[ $database != postgres ]] || next+=" -f compose.postgres.yaml"
+next+=" up -d"
 say ""
 say "Next: ${BOLD}${next}${RESET}"
 say "${DIM}Back up $OUTPUT with your database. The keys in it cannot be recovered.${RESET}"
